@@ -27,7 +27,7 @@ const Rating = ({value, text, color}) => {
         return stars
     }
 
-    const stars = useMemo(() => renderStars(), [value])
+    const stars = useMemo(renderStars, [value])
 
     return (
         <div className="rating ">

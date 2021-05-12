@@ -1,35 +1,46 @@
-import { useParams, useLocation, Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useParams, Link } from 'react-router-dom'
+import axios from 'axios'
+
 import { Row, Col, Image,  ListGroup, Card, Button } from 'react-bootstrap'
+
 import Rating from '../components/Rating'
-import products from '../products'
 
 const ProductView = () => {
+    const [product, setProduct] = useState({})
     const { id } = useParams()
-    const p = products.find(p => p._id === id)
 
-    console.log(useLocation())
+    useEffect(() => {
+        const fetchProduct = async () => {
+            const res = await axios.get(`/api/product/${id}`)
+            
+            setProduct(res.data)
+        }
+
+        fetchProduct()
+    }, [id])
 
     return (
         <div className='product-details'>
             <Link className='btn btn-light my-3' to='/'>Home</Link>
             <Row>
                 <Col md={5}>
-                    <Image src={p.image} alt={p.name} fluid/>
+                    <Image src={product.image} alt={product.name} fluid/>
                 </Col>
                 <Col md={4}>
                     <ListGroup varint="flush">
                         <ListGroup.Item>
-                            <h2 className='my-3'>{ p.name }</h2>
+                            <h2 className='my-3'>{ product.name }</h2>
                             <Rating 
-                                value={p.rating} 
-                                text={`${p.numReviews} reviews`} 
+                                value={product.rating} 
+                                text={`${product.numReviews} reviews`} 
                             />
                         </ListGroup.Item>
                         <ListGroup.Item className="py-3">
-                            Price: ${p.price}
+                            Price: ${product.price}
                         </ListGroup.Item>
                         <ListGroup.Item className="py-3">
-                            Description: {p.description}
+                            Description: {product.description}
                         </ListGroup.Item>
                     </ListGroup>
                 </Col>
@@ -42,7 +53,7 @@ const ProductView = () => {
                                         Price:
                                     </Col>
                                     <Col>
-                                        {p.price}
+                                        {product.price}
                                     </Col>
                                 </Row>
                             </ListGroup.Item>
@@ -52,12 +63,12 @@ const ProductView = () => {
                                         Status:
                                     </Col>
                                     <Col>
-                                        {p.countInStock ? `avalibale ${p.countInStock}` : 'out of stock'}
+                                        {product.countInStock ? `avalibale ${product.countInStock}` : 'out of stock'}
                                     </Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item className="text-center my-2">
-                                <Button className="btn btn-dark" type="button" disabled={!p.countInStock}>add to cart</Button>
+                                <Button className="btn btn-dark" type="button" disabled={!product.countInStock}>add to cart</Button>
                             </ListGroup.Item>
                         </ListGroup>
                     </Card>
