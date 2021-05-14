@@ -15,7 +15,7 @@ function App() {
         <div className="content py-3">
           <Container>
             <Route path='/' exact component={HomeView}/>
-            <Route path='/product/:id' exact component={ProductView}/>
+            <Route path='/products/:id' exact component={ProductView}/>
           </Container>
         </div>
 
