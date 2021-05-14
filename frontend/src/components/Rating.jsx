@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import PropTypes from 'prop-types'
 
 const Rating = ({value, text, color}) => {
-
+    
     const renderStars = () => {
         let temp = value
         const stars = []
