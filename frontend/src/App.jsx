@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap'
 
 import HomeView from './views/HomeView'
 import ProductView from './views/ProductView'
+import CartView from './views/CartView'
 import Header from './components/Header'
 import Footer from './components/Footer'
 
@@ -16,6 +17,7 @@ function App() {
           <Container>
             <Route path='/' exact component={HomeView}/>
             <Route path='/products/:id' exact component={ProductView}/>
+            <Route path='/cart/:id?' exact component={CartView}/>
           </Container>
         </div>
 
