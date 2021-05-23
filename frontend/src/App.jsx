@@ -3,8 +3,12 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 
 import HomeView from './views/HomeView'
+import LoginView from './views/LoginView'
+import RegisterView from './views/RegisterView'
 import ProductView from './views/ProductView'
 import CartView from './views/CartView'
+import ProfileView from './views/ProfileView'
+
 import Header from './components/Header'
 import Footer from './components/Footer'
 
@@ -18,6 +22,9 @@ function App() {
             <Route path='/' exact component={HomeView}/>
             <Route path='/products/:id' exact component={ProductView}/>
             <Route path='/cart/:id?' exact component={CartView}/>
+            <Route path='/login' component={LoginView}/>
+            <Route path='/register' component={RegisterView}/>
+            <Route path='/profile' component={ProfileView}/>
           </Container>
         </div>
 

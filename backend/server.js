@@ -7,7 +7,6 @@ import productsRoutes from './routes/productsRoutes.js'
 import usersRoutes from './routes/usersRoutes.js'
 
 import { notFound, errorHandler } from './middleware/errorMidd.js'
-import { protect } from './middleware/authMidd.js'
 
 dotenv.config()
 
