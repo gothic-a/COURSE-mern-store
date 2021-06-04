@@ -8,12 +8,14 @@ import { addToCart, removeFromCart } from '../actions/cartActions'
 
 
 const CartView = () => {
-
     const { id } = useParams()
     const qty = Number(useQuery().get('qty'))
 
+    const history = useHistory()
+
     const dispatch = useDispatch()
     const { cartItems } = useSelector(state => state.cart)
+    const { userInfo } = useSelector(state => state.userLogin)
 
     useEffect(() => {
         if(id && qty) {
@@ -22,8 +24,12 @@ const CartView = () => {
     }, [id, qty])
 
     const cartRemoveHandler = (id) => {
-        console.log('click')
         dispatch(removeFromCart(id))
+    }
+
+    const getOrderHandler = () => {
+        if(userInfo) history.push('/shipping')
+        else history.push(`/login?redirect=shipping`)
     }
 
     return (
@@ -125,6 +131,7 @@ const CartView = () => {
                             <Button
                                 className="btn btn-dark" 
                                 type="button"
+                                onClick={getOrderHandler}
                             >
                                 get order
                             </Button>

@@ -15,14 +15,12 @@ const LoginView = () => {
     const history = useHistory()
     const redirect = useQuery().get('redirect')
 
-    console.log(redirect)
-
     const dispatch = useDispatch()
     const { loading, error, userInfo } = useSelector(state => state.userLogin)
 
     useEffect(() => {
         if(userInfo) {
-            history.push('/')
+            history.push(redirect)
         }
     }, [history, userInfo])
 
@@ -32,8 +30,6 @@ const LoginView = () => {
         if(email && password) {
            dispatch(login(email, password)) 
         }
-        
-
     }
 
     return (
