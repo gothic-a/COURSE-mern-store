@@ -1,13 +1,23 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
-import { productListReducer, productReducer } from './reducers/productReducers'
+
 import { cartReducer } from './reducers/cartReducers'
+import { 
+    productListReducer, 
+    productReducer 
+} from './reducers/productReducers'
 import { 
     userLoginReducer, 
     userRegisterReducer, 
     userDetailsReducer, 
     userUpdateProfileReducer 
 } from './reducers/userReducers'
+import {
+    orderCreateReducer,
+    getOrderDetailsReducer,
+    orderPayReducer,
+    orderMyListReducer
+} from './reducers/orderReducers'
 
 import { composeWithDevTools } from 'redux-devtools-extension'
 
@@ -19,6 +29,10 @@ const reducer = combineReducers({
     userRegister: userRegisterReducer,
     userDetails: userDetailsReducer,
     userUpdateProfile: userUpdateProfileReducer,
+    orderCreate: orderCreateReducer,
+    orderDetails: getOrderDetailsReducer,
+    orderPay: orderPayReducer,
+    orderMyList: orderMyListReducer
 })
 
 const getDataFromStorage = (key) => {

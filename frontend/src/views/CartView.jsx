@@ -14,7 +14,7 @@ const CartView = () => {
     const history = useHistory()
 
     const dispatch = useDispatch()
-    const { cartItems } = useSelector(state => state.cart)
+    const { cartItems, shippingAddress, paymentMethod } = useSelector(state => state.cart)
     const { userInfo } = useSelector(state => state.userLogin)
 
     useEffect(() => {
@@ -28,7 +28,14 @@ const CartView = () => {
     }
 
     const getOrderHandler = () => {
-        if(userInfo) history.push('/shipping')
+        console.log(paymentMethod)
+        if(userInfo) {
+            shippingAddress && paymentMethod 
+            ? history.push('/placeorder')
+            : shippingAddress
+            ? history.push('/payment') 
+            : history.push('/shipping') 
+        }
         else history.push(`/login?redirect=shipping`)
     }
 

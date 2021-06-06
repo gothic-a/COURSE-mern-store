@@ -11,7 +11,7 @@ const PaymentView = () => {
     const [paymentMethod, setPaymentMethod] = useState('PayPal')
 
     const dispatch = useDispatch()
-    const { shippingAddress } = useSelector(state => state.cart)
+    const { shippingAddress, paymentMethod: paymentMethodFromState } = useSelector(state => state.cart)
     
     const history = useHistory()
 

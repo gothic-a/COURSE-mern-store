@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useHistory } from 'react-router-dom'
 import useQuery from '../utils/useQuery'
-import { Form , Button, Row, Col } from 'react-bootstrap'
+import { Form , Button, Row, Col, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from  'react-redux'
 import Message from '../components/Message'
 import Spinner from '../components/Spinner'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
+import { myListOrders } from '../actions/orderActions'
 
 const ProfileView = () => {
     const [name, setName] = useState('')
@@ -18,9 +19,11 @@ const ProfileView = () => {
     const redirect = useQuery().get('redirect')
 
     const dispatch = useDispatch()
+
     const { user, loading, error } = useSelector(state => state.userDetails)
     const { userInfo } = useSelector(state => state.userLogin)
     const { success } = useSelector(state => state.userUpdateProfile)
+    const { orders, loading: loadingOrders, error: errorOrders  } = useSelector(state => state.orderMyList)
 
     useEffect(() => {
         if(!userInfo) {
@@ -28,6 +31,7 @@ const ProfileView = () => {
         } else {
             if(!user.name) {
                 dispatch(getUserDetails('profile'))
+                dispatch(myListOrders())
             } else {
                 setName(user.name)
                 setEmail(user.email)
@@ -109,7 +113,44 @@ const ProfileView = () => {
             </Col>
 
             <Col md={9}>
-            
+                <h2>My Orders</h2>
+                {
+                    loadingOrders ? <Spinner />
+                    : errorOrders ? <Message variant="danger">{ errorOrders }</Message>
+                    : (
+                        <Table
+                            striped
+                            bordered
+                            hover
+                            responsive
+                            className='table-sm'
+                        >
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>DATE</th>
+                                    <th>TOTAL</th>
+                                    <th>PAID</th>
+                                    <th>DELIVIRED</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    orders.map(o => (
+                                        <tr key={o._id}>
+                                            <td>{o._id}</td>
+                                            <td>{o.createdAt.substring(0, 10)}</td>
+                                            <td>{o.totalPrice}</td>
+                                            <td>{o.isPaid ? o.paidAt : 'non'}</td>
+                                            <td>{o.isDelivired ? o.deliviredAt : 'non'}</td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </Table>
+                    )
+                }
             </Col>
         </Row>
     )

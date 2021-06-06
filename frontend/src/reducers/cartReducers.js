@@ -5,13 +5,21 @@ import {
     CART_SAVE_PAYMENT_METHOD
 } from '../constants/cartConstants'
 
-const updateTotal = (state, item, type = 'inc', existItem) => {
-    const prevItemTotalPrice = state.cart
+const updateTotal = (state, item, type = 'inc') => {
+
     const itemTotalPrice = item.price * item.qty
-    console.log(itemTotalPrice)
 
     if(type === 'inc') {
-        return state.totalPrice += itemTotalPrice
+        const existItem = state.cartItems.find(i => i.product === item.product)
+
+        if(existItem) {
+            const prevItemTotalPrice = existItem.price * existItem.qty
+
+            return (state.totalPrice - prevItemTotalPrice) + itemTotalPrice
+        } else {
+            return state.totalPrice += itemTotalPrice
+        }
+        
     } else {
         return state.totalPrice -= itemTotalPrice
     }
@@ -27,7 +35,7 @@ export const cartReducer = (state = { cartItems: [], shippingAdress: {}, payment
                 return {
                     ...state,
                     cartItems: state.cartItems.map(i => i.product === item.product ? item : i ),
-                    totalPrice: updateTotal(state, item, 'inc', existItem)
+                    totalPrice: updateTotal(state, item)
                 }
             } else {
                 return {
