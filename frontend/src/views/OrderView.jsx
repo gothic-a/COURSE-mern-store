@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { PayPalButton } from 'react-paypal-button-v2'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, useHistory, Link } from 'react-router-dom'
-import { Button, Row, Col, ListGroup, Card, Image } from 'react-bootstrap'
+import { useParams, Link, useLocation } from 'react-router-dom'
+import { Row, Col, ListGroup, Card, Image } from 'react-bootstrap'
 import Spinner from '../components/Spinner'
 
 import { ORDER_PAY_RESET } from '../constants/orderConstants'
@@ -13,9 +13,14 @@ import Message from '../components/Message'
 
 const OrderView = () => {
     const [sdkReady, setSdkReady] = useState(false)
+    const [liqData, setLiqData] = useState('')
+    const [liqSignature, setLiqSignature] = useState('')
 
     const dispatch = useDispatch()
     const { id } = useParams()
+    const location = useLocation()
+
+    console.log(location)
 
     const { order, error, loading } = useSelector(state => state.orderDetails)
     const { loading: payLoading, success: paySuccess } = useSelector(state => state.orderPay)
@@ -32,7 +37,6 @@ const OrderView = () => {
                 console.log('ready')
             }
             
-
             document.body.appendChild(script)
         }
 
@@ -48,9 +52,31 @@ const OrderView = () => {
         }
     }, [id, dispatch, paySuccess, order, sdkReady])
 
+    useEffect(() => {
+        const fetchLiqPayConfig = async () => {
+            const configData = {
+                order_id: order._id,
+                amount: order.totalPrice,
+                currency: 'USD',
+                result_url: `http://localhost:3000${location.pathname}`
+            }
+
+            console.log(configData)
+
+            const { data: { data, signature } } = await axios.post('/api/config/liqpay', configData)
+
+            setLiqData(data)
+            setLiqSignature(signature)
+        }
+
+        if(order) fetchLiqPayConfig()
+
+    }, [order])
+
     const successPaymentHandler = (paymentResult) => {
-        console.log(paymentResult)
-        dispatch(payOrder(order.id, paymentResult))
+
+        console.log('result', paymentResult)
+        dispatch(payOrder(order._id, paymentResult))
     }
 
     return (
@@ -137,7 +163,7 @@ const OrderView = () => {
                                     <ListGroup.Item>
                                         <Row>
                                             <Col>Items:</Col>
-                                            <Col>${order.totalPrice}</Col>
+                                            <Col>${order.totalPrice - order.taxPrice}</Col>
                                         </Row>
                                     </ListGroup.Item>
                                     <ListGroup.Item>
@@ -160,19 +186,37 @@ const OrderView = () => {
                                     </ListGroup.Item>
                                     {
                                         !order.isPaid && (
-                                            <ListGroup.Item>
-                                                { 
-                                                    payLoading && <Spinner /> 
-                                                }
-                                                {
-                                                    !sdkReady 
-                                                    ? <Spinner /> 
-                                                    : <PayPalButton 
-                                                        amount={order.totalPrice}
-                                                        onSuccess={successPaymentHandler}
-                                                    />
-                                                }
-                                            </ListGroup.Item>
+                                            <>
+                                                <ListGroup.Item>
+                                                    { 
+                                                        payLoading && <Spinner /> 
+                                                    }
+                                                    {
+                                                        !sdkReady 
+                                                        ? <Spinner /> 
+                                                        : <PayPalButton 
+                                                            amount={order.totalPrice}
+                                                            onSuccess={successPaymentHandler}
+                                                        />
+                                                    }
+                                                </ListGroup.Item>
+                                                <ListGroup.Item>
+                                                    {
+                                                        payLoading && <Spinner />
+                                                    }
+                                                    {
+                                                        !liqData || !liqSignature
+                                                        ? <Spinner />
+                                                        : (
+                                                            <form method="POST" action="https://www.liqpay.ua/api/3/checkout" acceptCharset="utf-8" _blank={true} >
+                                                                <input type="hidden" name="data" value={liqData}/>
+                                                                <input type="hidden" name="signature" value={liqSignature}/>
+                                                                <input type="image" src="http://static.liqpay.ua/buttons/p1ru.radius.png"/>
+                                                            </form>
+                                                        )
+                                                    }
+                                                </ListGroup.Item>
+                                            </>
                                         )
                                     }
                                 </ListGroup>

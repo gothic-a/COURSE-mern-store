@@ -20,8 +20,8 @@ const LoginView = () => {
 
     useEffect(() => {
         if(userInfo) {
-            history.push(redirect)
-        }
+            redirect ? history.push(redirect) : history.push('/')
+        } 
     }, [history, userInfo])
 
     const submitHandler = (e) => {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation, useHistory } from 'react-router-dom'
 import useQuery from '../utils/useQuery'
 import { Form , Button, Row, Col, Table } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from  'react-redux'
 import Message from '../components/Message'
 import Spinner from '../components/Spinner'
@@ -144,6 +145,13 @@ const ProfileView = () => {
                                             <td>{o.totalPrice}</td>
                                             <td>{o.isPaid ? o.paidAt : 'non'}</td>
                                             <td>{o.isDelivired ? o.deliviredAt : 'non'}</td>
+                                            <td>
+                                                <LinkContainer to={`/order/${o._id}`}>
+                                                    <Button variant="light">
+                                                        Details
+                                                    </Button>
+                                                </LinkContainer>
+                                            </td>
                                         </tr>
                                     ))
                                 }

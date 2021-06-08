@@ -15,9 +15,10 @@ const PlaceOrderScreen = () => {
 
     const history = useHistory()
 
+    const totalItemsPrice = +totalPrice.toFixed(2)
     const shippingPrice = totalPrice > 100 ? 0 : 100
     const taxPrice = Number((0.15 * totalPrice).toFixed(2))
-    const totalOrderPrice = +totalPrice + +shippingPrice + +taxPrice
+    const totalOrderPrice = (+totalPrice + +shippingPrice + +taxPrice).toFixed(2)
 
     useEffect(() => {
         if(success) history.push(`/order/${order._id}`)
@@ -28,7 +29,7 @@ const PlaceOrderScreen = () => {
             orderItems: cartItems,
             shippingAddress,
             paymentMethod,
-            totalPrice,
+            totalPrice: totalOrderPrice,
             shippingPrice,
             taxPrice,
             totalOrderPrice
@@ -101,7 +102,7 @@ const PlaceOrderScreen = () => {
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Items:</Col>
-                                    <Col>${totalPrice}</Col>
+                                    <Col>${totalItemsPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
