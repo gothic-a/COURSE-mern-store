@@ -45,6 +45,7 @@ export const saveShippingAdress = (data) => (dispatch, getState) => {
 }
 
 export const savePaymentMethod = (method) => (dispatch) => {
+    
     dispatch({
         type: CART_SAVE_PAYMENT_METHOD,
         payload: method,

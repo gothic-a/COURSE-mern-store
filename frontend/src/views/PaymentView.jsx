@@ -46,10 +46,10 @@ const PaymentView = () => {
                         <Form.Check
                             className="my-1"
                             type='radio'
-                            label='Stripe'
-                            id='Stripe'
+                            label='Credit card'
+                            id='liqpay'
                             name='paymentMethod'
-                            value='stripe'
+                            value='liqpay'
                             onChange={(e) => setPaymentMethod(e.target.value)}
                         >
                         </Form.Check>

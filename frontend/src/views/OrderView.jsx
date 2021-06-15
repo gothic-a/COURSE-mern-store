@@ -6,7 +6,7 @@ import { useParams, Link, useLocation } from 'react-router-dom'
 import { Row, Col, ListGroup, Card, Image } from 'react-bootstrap'
 import Spinner from '../components/Spinner'
 
-import { ORDER_PAY_RESET } from '../constants/orderConstants'
+import { ORDER_PAY_RESET, ORDER_DETAILS_RESET } from '../constants/orderConstants'
 
 import { getOrderById, payOrder } from '../actions/orderActions'
 import Message from '../components/Message'
@@ -20,27 +20,29 @@ const OrderView = () => {
     const { id } = useParams()
     const location = useLocation()
 
-    console.log(location)
-
     const { order, error, loading } = useSelector(state => state.orderDetails)
     const { loading: payLoading, success: paySuccess } = useSelector(state => state.orderPay)
 
     useEffect(() => {
+        dispatch({type: ORDER_DETAILS_RESET})
+    }, [])
+    
+    useEffect(() => {
         const addPayPalScript = async () => {
-            const { data: clientId } = await axios.get('/api/config/paypal')
+            const { data: clientId } = await axios.get('/api/pay/paypal/config')
             const script = document.createElement('script')
             script.type = 'text/javascript'
             script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
             script.async = true
             script.onload = () => {
                 setSdkReady(true)
-                console.log('ready')
             }
             
             document.body.appendChild(script)
         }
-
-        if(!order || paySuccess) {
+        
+        if(!order || paySuccess) {  
+            console.log(order )         
             dispatch({type: ORDER_PAY_RESET})
             dispatch(getOrderById(id))
         } else if(!order.isPaid) {
@@ -55,22 +57,21 @@ const OrderView = () => {
     useEffect(() => {
         const fetchLiqPayConfig = async () => {
             const configData = {
-                order_id: order._id,
+                order_id: order._id ,
                 amount: order.totalPrice,
                 currency: 'USD',
+                description: `Order: ${order._id}`,
                 result_url: `http://localhost:3000${location.pathname}`
             }
 
-            console.log(configData)
-
-            const { data: { data, signature } } = await axios.post('/api/config/liqpay', configData)
+            const { data: { data, signature } } = await axios.post('/api/pay/liqpay/config', configData)
 
             setLiqData(data)
             setLiqSignature(signature)
         }
 
         if(order) fetchLiqPayConfig()
-
+       
     }, [order])
 
     const successPaymentHandler = (paymentResult) => {
@@ -185,8 +186,12 @@ const OrderView = () => {
                                         </Row>
                                     </ListGroup.Item>
                                     {
-                                        !order.isPaid && (
-                                            <>
+                                        
+                                        !order.isPaid &&
+                                            
+                                                <> {
+                                                order.paymentMethod === 'PayPal' 
+                                                && 
                                                 <ListGroup.Item>
                                                     { 
                                                         payLoading && <Spinner /> 
@@ -200,6 +205,10 @@ const OrderView = () => {
                                                         />
                                                     }
                                                 </ListGroup.Item>
+                                                }
+                                                {
+                                                order.paymentMethod === 'liqpay' 
+                                                && 
                                                 <ListGroup.Item>
                                                     {
                                                         payLoading && <Spinner />
@@ -208,7 +217,13 @@ const OrderView = () => {
                                                         !liqData || !liqSignature
                                                         ? <Spinner />
                                                         : (
-                                                            <form method="POST" action="https://www.liqpay.ua/api/3/checkout" acceptCharset="utf-8" _blank={true} >
+                                                            <form 
+                                                                method="POST" 
+                                                                target="_blank"
+                                                                action="https://www.liqpay.ua/api/3/checkout" 
+                                                                acceptCharset="utf-8" 
+                                                                style={{display: 'flex', justifyContent: 'center'}}
+                                                            >
                                                                 <input type="hidden" name="data" value={liqData}/>
                                                                 <input type="hidden" name="signature" value={liqSignature}/>
                                                                 <input type="image" src="http://static.liqpay.ua/buttons/p1ru.radius.png"/>
@@ -216,8 +231,8 @@ const OrderView = () => {
                                                         )
                                                     }
                                                 </ListGroup.Item>
-                                            </>
-                                        )
+                                                }
+                                        </>
                                     }
                                 </ListGroup>
                             </Card>  

@@ -4,7 +4,11 @@ import {
     PRODUCT_FAIL,
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESS, 
-    PRODUCT_LIST_FAIL
+    PRODUCT_LIST_FAIL,
+    PRODUCT_CREATE_REVIEW_REQUEST,
+    PRODUCT_CREATE_REVIEW_SUCCESS, 
+    PRODUCT_CREATE_REVIEW_FAIL,
+    PRODUCT_CREATE_REVIEW_RESET,
 } from '../constants/productConstants'
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -50,4 +54,8 @@ export const productReducer = (state = { product: {} }, action) => {
         default:
             return state
     }
+}
+
+export const productReviewReducer = (state = {}, action) => {
+    
 }

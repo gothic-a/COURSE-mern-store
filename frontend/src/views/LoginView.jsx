@@ -59,11 +59,6 @@ const LoginView = () => {
                 
                 {
                     error && <Message variant="danger">{error}</Message>
-                    // (
-                    //     <Row>
-                    //         <p style={{color: 'tomato', margin: 0}} className="py-3">{error}</p>
-                    //     </Row>
-                    // )
                 }
 
                 <Row>

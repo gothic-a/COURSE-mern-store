@@ -13,8 +13,8 @@ import {
     ORDER_MY_LIST_SUCCESS,
     ORDER_MY_LIST_FAIL,
     ORDER_MY_LIST_RESET,
+    ORDER_DETAILS_RESET,
 } from '../constants/orderConstants'
-
 
 const orderCreateReducer = (state = {}, action) => {
     switch(action.type) {
@@ -43,7 +43,7 @@ const orderCreateReducer = (state = {}, action) => {
     }
 }
 
-const getOrderDetailsReducer = (state = { loading: true, orderItems: [], shippingAddress: {} }, action) => {
+const getOrderDetailsReducer = (state = { loading: true }, action) => {
     switch(action.type) {
         case ORDER_DETAILS_REQUEST:
             return {
@@ -60,6 +60,10 @@ const getOrderDetailsReducer = (state = { loading: true, orderItems: [], shippin
             return {
                 loading: false,
                 error: action.payload
+            }
+        case ORDER_DETAILS_RESET:
+            return {
+                loading: true,
             }
 
         default:

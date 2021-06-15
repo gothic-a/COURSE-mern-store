@@ -57,7 +57,7 @@ const PlaceOrderScreen = () => {
                             <h2>Payment method</h2>
                             <p>
                                 <b>Method: </b>
-                                {paymentMethod}
+                                {paymentMethod === 'liqpay' ? 'Credit card' : paymentMethod}
                             </p>
                         </ListGroup.Item>
 
