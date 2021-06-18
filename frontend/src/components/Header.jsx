@@ -6,6 +6,8 @@ import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap'
 import { USER_DETAILS_RESET } from '../constants/userConstants'
 import { ORDER_MY_LIST_RESET } from '../constants/orderConstants'
 
+import SearchBox from './SearchBox'
+
 const Header = () => {
 
     const dispatch = useDispatch()
@@ -26,7 +28,7 @@ const Header = () => {
                     <LinkContainer to="/">
                         <Navbar.Brand href="/">ProShop</Navbar.Brand>
                     </LinkContainer>
-                    
+                    <SearchBox />
                     <Nav className="mr-auto">
                         <LinkContainer to="/cart">
                             <Nav.Link> <i className="fas fa-shopping-cart"></i> Cart</Nav.Link>

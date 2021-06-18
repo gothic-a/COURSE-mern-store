@@ -24,6 +24,7 @@ function App() {
         <div className="content py-3">
           <Container>
             <Route path='/' exact component={HomeView}/>
+            <Route path='/search/:keyword' component={HomeView}/>
             <Route path='/products/:id' exact component={ProductView}/>
             <Route path='/cart/:id?' exact component={CartView}/>
             <Route path='/login' component={LoginView}/>
