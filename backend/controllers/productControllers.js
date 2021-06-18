@@ -23,8 +23,6 @@ export const createProductReview = asyncHandler(async (req, res) => {
     const { raiting, comment } = req.body
     const { _id, name} = req.user
 
-    console.log(raiting, comment)
-
     const product = await Product.findById(req.params.id)
 
     if(product) {
@@ -43,12 +41,9 @@ export const createProductReview = asyncHandler(async (req, res) => {
         }
 
         product.reviews.push(review)
-        console.log(review)
 
         product.numReviews = product.reviews.length
         product.raiting = product.reviews.reduce((acc, r) => r.raiting + acc, 0) / product.reviews.length
-
-        console.log(product)
 
         await product.save()
 

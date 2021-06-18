@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import Rating from './Rating'
 
-const Product = ({_id, name, image, rating, numReviews, price}) => {
+const Product = ({_id, name, image, raiting, numReviews, price}) => {
     return (
         <Card className='my-3 p-3 rounded'>
             <Link to={`/products/${_id}`}>
@@ -17,7 +17,7 @@ const Product = ({_id, name, image, rating, numReviews, price}) => {
                 </Link>
 
                 <Card.Text as="div">
-                    <Rating value={rating} text={`${numReviews} reviews`} />
+                    <Rating value={raiting} text={`${numReviews} reviews`} />
                 </Card.Text>
 
                 <Card.Text as="h3" className="my-3">${price}</Card.Text>   
