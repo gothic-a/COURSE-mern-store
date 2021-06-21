@@ -21,8 +21,11 @@ export const productListReducer = (state = { products: [], productsOnScreen: 0 }
                 ...state,
             }
         case PRODUCT_LIST_SUCCESS: {
-            console.log(action.payload.inseartHead)
+            const { page, pageSize, pageCount, totalProductsCount } = action.payload
+            console.log(action.payload)
+
             let products = []
+
             if(action.payload.inseartHead) {
                 products = [
                     ...action.payload.products,
@@ -34,14 +37,28 @@ export const productListReducer = (state = { products: [], productsOnScreen: 0 }
                     ...action.payload.products
                 ]
             }
+
+            let firstPage = 0
+            let lastPage = 0
+
+            if(state.firstPage && state.lastPage) {
+                firstPage = page < state.firstPage ? page : state.firstPage 
+                lastPage = page > state.lastPage ? page : state.lastPage 
+            } else {
+                firstPage = page
+                lastPage = page
+            }
+
             return { 
                 loading: false, 
                 products,
-                page: action.payload.page,
-                pageCount: action.payload.pages,
-                pageSize: action.payload.pageSize,
+                page,
+                pageCount,
+                pageSize,
+                totalProductsCount,
                 productsOnScreen: state.productsOnScreen + action.payload.products.length,
-                totalProductsCount: action.payload.totalProductsCount
+                firstPage,
+                lastPage
             }
         }
         case PRODUCT_LIST_FAIL:

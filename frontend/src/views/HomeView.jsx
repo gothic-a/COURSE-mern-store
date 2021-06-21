@@ -12,34 +12,49 @@ import { listProducts } from '../actions/productActions'
 
 const HomeView = () => {  
     const history = useHistory()
+
     const { keyword } = useParams()
-    const pageNumber = useQuery().get('page')
+    const pageFromQuery = useQuery().get('page')
 
     const dispatch = useDispatch()
 
     const productList = useSelector(state => state.productList)
-    const { loading, products, error, page, pageCount, pageSize, productsOnScreen, totalProductsCount } = productList
+    const { 
+        loading, 
+        products, 
+        error, 
+        pageCount, 
+        productsOnScreen, 
+        totalProductsCount,
+        lastPage,
+        firstPage
+    } = productList
 
     useEffect(() => {
-        dispatch(listProducts(keyword, pageNumber))
-    }, [dispatch, keyword, pageNumber])
 
-    const loadClickHandler = (value) => {
-        history.push(`/?page=${page + 1}`)
+        if(pageFromQuery && (pageFromQuery < firstPage || pageFromQuery > lastPage)) {
+            dispatch(listProducts(keyword, pageFromQuery))
+        } else if(!firstPage && !lastPage) {
+            dispatch(listProducts(keyword, pageFromQuery))
+        }
+
+    }, [dispatch, keyword, pageFromQuery])
+
+    const loadClickHandler = () => {
+        history.push(`/?page=${lastPage + 1}`)
     }
 
     const prevClickHandler = () => {
-        dispatch(listProducts(keyword, page - 1))
+        history.push(`/?page=${firstPage - 1}`)
     }
 
     return (
         <>
             <h1 className="pb-3" >Latest products</h1>
-            
             {
                 
-                pageNumber && productsOnScreen / pageNumber !== pageSize 
-                    && (
+                firstPage !== 1 &&  
+                    (
                         <Row 
                             className="py-3" 
                             style={{display: 'flex', justifyContent: 'center'}}
@@ -72,11 +87,11 @@ const HomeView = () => {
                     className="py-3" 
                     style={{display: 'flex', justifyContent: 'center'}}
                 >
-                    <span className="py-2" style={{textAlign: 'center'}}>{productsOnScreen}/{totalProductsCount}</span>
+                    <span className="py-2" style={{textAlign: 'center'}}>{productsOnScreen} watched from {totalProductsCount}</span>
                     <Button 
                         style={{width: 'auto'}}
-                        onClick={() => loadClickHandler(1)}
-                        disabled={+pageNumber === pageCount}
+                        onClick={loadClickHandler}
+                        disabled={lastPage === pageCount}
                     >
                         load more
                     </Button>

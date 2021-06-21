@@ -19,14 +19,14 @@ export const getProducts = asyncHandler(async (req, res) => {
         } 
     } : {} 
 
-    const count = await Product.countDocuments ({ ...keyword })
+    const count = await Product.countDocuments({ ...keyword })
     const products = await Product.find({ ...keyword })
         .sort({ ...sort })
         .limit(pageSize)
         .skip(pageSize * (page - 1))
         
 
-    res.json({products, page, pages: Math.ceil(count / pageSize), totalProductsCount: count, pageSize})
+    res.json({products, page, pageCount: Math.ceil(count / pageSize), totalProductsCount: count, pageSize})
 })
 
 export const getProductById = asyncHandler(async (req, res) => {
