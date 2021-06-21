@@ -11,19 +11,39 @@ import {
     PRODUCT_CREATE_REVIEW_RESET,
 } from '../constants/productConstants'
 
-export const productListReducer = (state = { products: [] }, action) => {
-
+export const productListReducer = (state = { products: [], productsOnScreen: 0 }, action) => {
     switch(action.type) {
         case PRODUCT_LIST_REQUEST: 
             return { 
-                loading: true, 
-                products: [] 
+                loading: true,
+                products: state.products,
+                error: null,
+                ...state,
             }
-        case PRODUCT_LIST_SUCCESS:
+        case PRODUCT_LIST_SUCCESS: {
+            console.log(action.payload.inseartHead)
+            let products = []
+            if(action.payload.inseartHead) {
+                products = [
+                    ...action.payload.products,
+                    ...state.products,
+                ]
+            } else {
+                products = [
+                    ...state.products,
+                    ...action.payload.products
+                ]
+            }
             return { 
                 loading: false, 
-                products: action.payload 
+                products,
+                page: action.payload.page,
+                pageCount: action.payload.pages,
+                pageSize: action.payload.pageSize,
+                productsOnScreen: state.productsOnScreen + action.payload.products.length,
+                totalProductsCount: action.payload.totalProductsCount
             }
+        }
         case PRODUCT_LIST_FAIL:
             return { 
                 loading: false, 

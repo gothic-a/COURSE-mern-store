@@ -2,7 +2,16 @@ import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
 
 export const getProducts = asyncHandler(async (req, res) => {
-    console.log(req.query)
+    const pageSize = Number(req.query.pageSize) || 2
+    const page = Number(req.query.page) || 1
+
+    const sortBy = req.query.sortBy || 'popularity'
+    const sortDirection = req.query.sortDirection || -1
+
+    const sort = {
+        [sortBy]: sortDirection
+    }
+
     const keyword = req.query.keyword ? {
         name: {
             $regex: req.query.keyword,
@@ -10,9 +19,14 @@ export const getProducts = asyncHandler(async (req, res) => {
         } 
     } : {} 
 
+    const count = await Product.countDocuments ({ ...keyword })
     const products = await Product.find({ ...keyword })
+        .sort({ ...sort })
+        .limit(pageSize)
+        .skip(pageSize * (page - 1))
+        
 
-    res.json(products)
+    res.json({products, page, pages: Math.ceil(count / pageSize), totalProductsCount: count, pageSize})
 })
 
 export const getProductById = asyncHandler(async (req, res) => {

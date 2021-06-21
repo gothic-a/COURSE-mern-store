@@ -14,13 +14,15 @@ connectDB()
 
 const importData = async () => {
     try {
-        const createdUsers = await User.insertMany(users)
-        const adminUser = createdUsers[0]._id
+        // const createdUsers = await User.insertMany(users)
+        const { _id: adminUser } = await User.findOne({isAdmin: true})
+        console.log(adminUser)
+
+        await Product.deleteMany()
 
         const sampleProducts = products.map(p => {
             return { ...p, user: adminUser }
         })
-        console.log(sampleProducts)
 
         await Product.insertMany(sampleProducts)
 

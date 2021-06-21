@@ -12,12 +12,14 @@ import {
     PRODUCT_CREATE_REVIEW_RESET,    
 } from '../constants/productConstants'
 
-export const listProducts = (keyword = "") => async (dispatch) => {
+export const listProducts = (keyword = "", page = 1, pageSize = 2, sortBy = 'popularity', sortDirection = -1) => async (dispatch, getState) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST})
 
-        const { data } = await axios.get(`/api/products?keyword=${keyword}`)
-        dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data })
+        const inseartHead = page < getState().productList.page 
+
+        const { data } = await axios.get(`/api/products?keyword=${keyword}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&orderDirection=${sortDirection}`)
+        dispatch({ type: PRODUCT_LIST_SUCCESS, payload: { ...data, inseartHead } })
     } catch(err) {
         
         dispatch({ 
