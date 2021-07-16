@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation, useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import useQuery from '../utils/useQuery'
 import { Form , Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from  'react-redux'
@@ -22,7 +22,7 @@ const LoginView = () => {
         if(userInfo) {
             redirect ? history.push(redirect) : history.push('/')
         } 
-    }, [history, userInfo])
+    }, [history, userInfo, redirect])
 
     const submitHandler = (e) => {
         e.preventDefault()

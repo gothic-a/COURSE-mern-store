@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation, useHistory } from 'react-router-dom'
-import useQuery from '../utils/useQuery'
+import { useHistory } from 'react-router-dom'
 import { Form , Button, Row, Col, Table } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from  'react-redux'
@@ -17,7 +16,6 @@ const ProfileView = () => {
     const [message, setMessage] = useState('')
 
     const history = useHistory()
-    const redirect = useQuery().get('redirect')
 
     const dispatch = useDispatch()
 

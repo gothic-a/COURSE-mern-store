@@ -43,7 +43,6 @@ const getLiqPayPaymentStatus = (req, res) => {
     res.header('Access-Control-Allow-Credentials', true)
     res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS')
 
-    console.log(req.body)
 }
 
 export {

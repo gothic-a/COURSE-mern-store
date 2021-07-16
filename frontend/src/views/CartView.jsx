@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
-import { Link, useParams, useLocation, useHistory } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useParams, useHistory } from 'react-router-dom'
 import useQuery from '../utils/useQuery'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
+import { Row, Col, ListGroup, Form, Button, Card } from 'react-bootstrap'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 
 
@@ -21,18 +21,17 @@ const CartView = () => {
         if(id && qty) {
             dispatch(addToCart(id, qty))
         }
-    }, [id, qty])
+    }, [id, qty, dispatch])
 
     const cartRemoveHandler = (id) => {
         dispatch(removeFromCart(id))
     }
 
     const getOrderHandler = () => {
-        console.log(paymentMethod)
         if(userInfo) {
-            shippingAddress && paymentMethod 
+            Object.keys(shippingAddress).length !== 0 && paymentMethod 
             ? history.push('/placeorder')
-            : shippingAddress
+            : Object.keys(shippingAddress).length !== 0
             ? history.push('/payment') 
             : history.push('/shipping') 
         } else history.push(`/login?redirect=shipping`)

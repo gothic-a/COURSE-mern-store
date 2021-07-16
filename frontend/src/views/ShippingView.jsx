@@ -1,5 +1,5 @@
-import { Link, useLocation, useHistory } from 'react-router-dom'
-import { Form , Button, Row, Col, Container } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
+import { Form , Button, Row, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from  'react-redux'
 import { Formik } from 'formik'
 
@@ -35,7 +35,6 @@ const ShippingView = () => {
 
                     onSubmit={
                         (values) => {
-                            console.log('sub')
                             submitHandler(values)
                         }
                     }

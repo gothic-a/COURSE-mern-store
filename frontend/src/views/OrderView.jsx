@@ -41,8 +41,7 @@ const OrderView = () => {
             document.body.appendChild(script)
         }
         
-        if(!order || paySuccess) {  
-            console.log(order )         
+        if(!order || paySuccess) {       
             dispatch({type: ORDER_PAY_RESET})
             dispatch(getOrderById(id))
         } else if(!order.isPaid) {
@@ -75,8 +74,6 @@ const OrderView = () => {
     }, [order])
 
     const successPaymentHandler = (paymentResult) => {
-
-        console.log('result', paymentResult)
         dispatch(payOrder(order._id, paymentResult))
     }
 
@@ -226,7 +223,7 @@ const OrderView = () => {
                                                             >
                                                                 <input type="hidden" name="data" value={liqData}/>
                                                                 <input type="hidden" name="signature" value={liqSignature}/>
-                                                                <input type="image" src="http://static.liqpay.ua/buttons/p1ru.radius.png"/>
+                                                                <input type="image" alt="liqpay" src="http://static.liqpay.ua/buttons/p1ru.radius.png"/>
                                                             </form>
                                                         )
                                                     }

@@ -9,7 +9,6 @@ import {
     ORDER_PAY_REQUEST,
     ORDER_PAY_SUCCESS,
     ORDER_PAY_FAIL,
-    ORDER_PAY_RESET,
     ORDER_MY_LIST_REQUEST,
     ORDER_MY_LIST_SUCCESS,
     ORDER_MY_LIST_FAIL,
@@ -33,7 +32,6 @@ const orderCreate = (order) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.post('/api/orders', order, config)
-        console.log(data._id) 
 
         dispatch({
             type: ORDER_CREATE_SUCCESS,

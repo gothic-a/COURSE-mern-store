@@ -25,7 +25,7 @@ const updateTotal = (state, item, type = 'inc') => {
     }
 }
 
-export const cartReducer = (state = { cartItems: [], shippingAdress: {}, paymentMethod: '', totalPrice: null }, action) => {
+export const cartReducer = (state = { cartItems: [], shippingAdress: {}, paymentMethod: "", totalPrice: null }, action) => {
     switch(action.type) {
         case CART_ADD_ITEM:
             const item = action.payload 

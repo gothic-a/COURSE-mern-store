@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { Button, Row, Col, ListGroup, Card, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from  'react-redux'
@@ -28,7 +28,7 @@ const PlaceOrderScreen = () => {
         if(!shippingAddress) history.push('/shipping')
         else if(!paymentMethod) history.push('/payment')
         else if(!cartItems) history.push('/')
-    }, [shippingAddress, paymentMethod, cartItems])
+    }, [shippingAddress, paymentMethod, cartItems, history])
 
     const placeOrderHandler = () => {
         dispatch(orderCreate({

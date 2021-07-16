@@ -27,7 +27,7 @@ const Rating = ({value, text, color}) => {
         return stars
     }
 
-    const stars = useMemo(renderStars, [value])
+    const stars = useMemo(renderStars, [value, color])
 
     return (
         <div className="rating ">
@@ -46,7 +46,7 @@ Rating.defaultProps = {
 }
 
 Rating.propTypes = {
-    text: PropTypes.string.isRequired,
+    text: PropTypes.string,
     color: PropTypes.string,
 }
 

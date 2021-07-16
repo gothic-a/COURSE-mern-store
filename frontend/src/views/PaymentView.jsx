@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
-import { Link, useLocation, useHistory } from 'react-router-dom'
-import { Form , Button, Row, Col, Container } from 'react-bootstrap'
+import { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { Form , Button, Col, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from  'react-redux'
-import { Formik } from 'formik'
 
 import { savePaymentMethod } from '../actions/cartActions'
 import CheckoutSteps from '../components/CheckoutSteps'
@@ -11,7 +10,7 @@ const PaymentView = () => {
     const [paymentMethod, setPaymentMethod] = useState('PayPal')
 
     const dispatch = useDispatch()
-    const { shippingAddress, paymentMethod: paymentMethodFromState } = useSelector(state => state.cart)
+    const { shippingAddress } = useSelector(state => state.cart)
     
     const history = useHistory()
 

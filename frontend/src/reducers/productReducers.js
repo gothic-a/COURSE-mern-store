@@ -23,7 +23,6 @@ export const productListReducer = (state = { products: [], productsOnScreen: 0 }
             }
         case PRODUCT_LIST_SUCCESS: {
             const { page, pageSize, pageCount, totalProductsCount } = action.payload
-            console.log(action.payload)
 
             let products = []
 
