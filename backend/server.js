@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import colors from 'colors'
 import connectDB from './config/db.js'
 import crypto from 'crypto'
+import path from 'path'
 
 import morgan from 'morgan'
 
@@ -22,14 +23,24 @@ const app = express()
 if(process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 app.use(express.json())
 
-app.get('/', (req, res) => {
-    res.send('Mern-store API welcome')
-})
-
 app.use('/api/products', productsRoutes)
 app.use('/api/users', usersRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/pay', payRoutes)
+
+const __dirname = path.resolve()
+
+if(process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '/frontend/build')))
+    
+    app.get('*', (req, res) => 
+        res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+    )
+} else {
+    app.get('/', (req, res) => {
+        res.send('Mern-store API welcome')
+    })
+}
 
 app.use(notFound)
 app.use(errorHandler)

@@ -12,7 +12,7 @@ import {
     PRODUCT_CREATE_REVIEW_RESET,    
 } from '../constants/productConstants'
 
-export const listProducts = (keyword = "", page = 1, pageSize = 2, sortBy = 'popularity', sortDirection = -1) => async (dispatch, getState) => {
+export const listProducts = (keyword = "", page = 1, pageSize = 4, sortBy = 'popularity', sortDirection = -1) => async (dispatch, getState) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST})
 
