@@ -2,9 +2,11 @@ import { useHistory } from 'react-router-dom'
 import { Form , Button, Row, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from  'react-redux'
 import { Formik } from 'formik'
+import * as yup from 'yup'
 
 import { saveShippingAdress } from '../actions/cartActions'
 import CheckoutSteps from '../components/CheckoutSteps'
+
 
 const ShippingView = () => {
 
@@ -32,6 +34,8 @@ const ShippingView = () => {
                         postalCode: postalCode || '',
                         country: country || '',
                     }}
+
+                    validateOnSubmit
 
                     onSubmit={
                         (values) => {
@@ -89,7 +93,8 @@ const ShippingView = () => {
                                     >
                                     </Form.Control>
                                 </Form.Group>
-                                <Button type="submit" variant="primary">
+
+                                <Button type="submit" variant="primary" disabled={!values.country || !values.postalCode || !values.country || !values.address}>
                                     Continue                                
                                 </Button>
                             </Form>
