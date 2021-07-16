@@ -5,6 +5,7 @@ import {
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESS, 
     PRODUCT_LIST_FAIL,
+    PRODUCT_LIST_RESET,
     PRODUCT_CREATE_REVIEW_REQUEST,
     PRODUCT_CREATE_REVIEW_SUCCESS, 
     PRODUCT_CREATE_REVIEW_FAIL,
@@ -65,6 +66,11 @@ export const productListReducer = (state = { products: [], productsOnScreen: 0 }
             return { 
                 loading: false, 
                 error: action.payload 
+            }
+        case PRODUCT_LIST_RESET: 
+            return {
+                products: [], 
+                productsOnScreen: 0
             }
         default:
             return state

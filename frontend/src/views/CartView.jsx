@@ -35,8 +35,7 @@ const CartView = () => {
             : shippingAddress
             ? history.push('/payment') 
             : history.push('/shipping') 
-        }
-        else history.push(`/login?redirect=shipping`)
+        } else history.push(`/login?redirect=shipping`)
     }
 
     return (

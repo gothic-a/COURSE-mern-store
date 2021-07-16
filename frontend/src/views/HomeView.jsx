@@ -9,6 +9,7 @@ import Spinner from '../components/Spinner'
 import Message from '../components/Message'
 
 import { listProducts } from '../actions/productActions'
+import { PRODUCT_LIST_RESET } from '../constants/productConstants'
 
 const HomeView = () => {  
     const history = useHistory()
@@ -31,13 +32,16 @@ const HomeView = () => {
     } = productList
 
     useEffect(() => {
-
-        if(pageFromQuery && (pageFromQuery < firstPage || pageFromQuery > lastPage)) {
+        if(keyword) {
+            dispatch(listProducts(keyword))
+        } else if(pageFromQuery && (pageFromQuery < firstPage || pageFromQuery > lastPage)) {
             dispatch(listProducts(keyword, pageFromQuery))
         } else if(!firstPage && !lastPage) {
             dispatch(listProducts(keyword, pageFromQuery))
+        } else {
+            dispatch({type: PRODUCT_LIST_RESET})
+            dispatch(listProducts())
         }
-
     }, [dispatch, keyword, pageFromQuery])
 
     const loadClickHandler = () => {

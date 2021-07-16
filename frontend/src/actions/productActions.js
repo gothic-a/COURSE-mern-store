@@ -6,6 +6,7 @@ import {
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESS,
     PRODUCT_LIST_FAIL,
+    PRODUCT_LIST_RESET,
     PRODUCT_CREATE_REVIEW_REQUEST,
     PRODUCT_CREATE_REVIEW_SUCCESS, 
     PRODUCT_CREATE_REVIEW_FAIL,
@@ -18,6 +19,7 @@ export const listProducts = (keyword = "", page = 1, pageSize = 4, sortBy = 'pop
 
         const inseartHead = page < getState().productList.page 
 
+        if(keyword) dispatch({type: PRODUCT_LIST_RESET})
         const { data } = await axios.get(`/api/products?keyword=${keyword}&page=${page}&pageSize=${pageSize}&sortBy=${sortBy}&orderDirection=${sortDirection}`)
         dispatch({ type: PRODUCT_LIST_SUCCESS, payload: { ...data, inseartHead } })
     } catch(err) {

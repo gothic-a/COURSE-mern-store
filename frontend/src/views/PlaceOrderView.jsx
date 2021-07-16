@@ -24,6 +24,12 @@ const PlaceOrderScreen = () => {
         if(success) history.push(`/order/${order._id}`)
     }, [history, success])
 
+    useEffect(() => {
+        if(!shippingAddress) history.push('/shipping')
+        else if(!paymentMethod) history.push('/payment')
+        else if(!cartItems) history.push('/')
+    }, [shippingAddress, paymentMethod, cartItems])
+
     const placeOrderHandler = () => {
         dispatch(orderCreate({
             orderItems: cartItems,
