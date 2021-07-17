@@ -1,4 +1,4 @@
-# MERN Notes Keeper  
+# MERN Store App
 
 [![N|Solid](https://res.cloudinary.com/dsohtcuy3/image/upload/v1626470356/button_demo_1_k6is2z.png)](https://mernstore-app.herokuapp.com/)
 
